@@ -1,0 +1,3253 @@
+{
+	"info": {
+		"_postman_id": "1a85e73a-d193-42ad-a0bd-ae27fefdd264",
+		"name": "Курсовая 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28043826"
+	},
+	"item": [
+		{
+			"name": "Smoke",
+			"item": [
+				{
+					"name": "01 /events Получение событий на неделю",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response isn't empty\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).not.empty;",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"from\": \"2023-08-28T00:00:00+03:00\", \n\"till\": \"2023-09-03T00:00:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 /createPersonal Создание события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Type is personal\", function () {",
+									"    pm.expect(jsonData.data.type).to.eql(\"personal\");",
+									"});",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									"let eventId = pm.response.json().data.payload.id",
+									"pm.collectionVariables.set(\"eventId\",eventId);",
+									"console.info(eventId);",
+									"",
+									"let eventStartAt = pm.response.json().data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\",eventStartAt);",
+									"console.info(eventStartAt);",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"description\": \"\",\n    \"title\": \"Пахомова смоук тест\",\n    \"startAt\": \"2023-08-28T19:00:00+03:00\",\n    \"endAt\": \"2023-08-28T19:30:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03 /updatePersonal Изменение события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response isn't empty\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).not.empty;",
+									"});",
+									"",
+									"let eventId = pm.response.json().data.payload.id",
+									"pm.collectionVariables.set(\"eventId\",eventId);",
+									"console.info(eventId);",
+									"",
+									"let eventStartAt = pm.response.json().data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\",eventStartAt);",
+									"console.info(eventStartAt);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"backgroundColor\": \"#FFF7C7\",\n    \"color\": \"#FAC641\",\n    \"description\": \"\",\n    \"title\": \"Пахомова смоук редактирование\",\n    \"startAt\": \"2023-09-03T19:00:00+03:00\",//изменение\n    \"endAt\": \"2023-09-03T19:30:00+03:00\",//изменение\n    \"id\": {{eventId}},\n    \"oldStartAt\": \"{{eventStartAt}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/updatePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04 /removePersonal Удаление события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response is empty\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).to.eql(true);",
+									"});",
+									"pm.test(\"Error is empty\", function () {",
+									"    let jsonData = pm.response.json();",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"//pm.test (\"Personal event not found\", function (){",
+									"//pm.expect(jsonData.errors[0].error.message).to.eql(\"Personal event not found\");",
+									"//});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{eventId}},\n    \"startAt\":\"{{eventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "creatPersonal Создание события с валидными данными",
+			"item": [
+				{
+					"name": "01.01 будущее 40 символов название события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Type is personal\", function () {",
+									"    pm.expect(jsonData.data.type).to.eql(\"personal\");",
+									"});",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									"",
+									"let eventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"eventId\", eventId);",
+									"console.info(eventId);",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"console.info(eventStartAt);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова Всё это будут позитивные сценар\",//максимально разрешенное кол-во символов\n    \"description\": \"\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-08-29T08:00:00+03:00\",//дата в будущем +2-3 дня:)\n    \"endAt\": \"2023-08-29T08:10:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "01.02 проверка события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"let jsonData = pm.response.json();",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"from\": \"2023-08-29T08:00:00+03:00\", \n\"till\": \"2023-08-29T08:10:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "01.03 удалить событие",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Response body is empty\", function (){",
+									"    pm.expect(jsonData.data).to.eql(true);",
+									"});",
+									"",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{eventId}},\n    \"startAt\":\"{{eventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02.01 сегодня_дефис в названии события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Type is personal\", function () {",
+									"    pm.expect(jsonData.data.type).to.eql(\"personal\");",
+									"});",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									"let eventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"eventId\", eventId);",
+									"console.info(eventId);",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"console.info(eventStartAt);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова День Анна-Марии и Зигм – унда\",//не более максимального кол-ва символов+дефисы и тире\n    \"description\": \"П\",\n    \"backgroundColor\": \"#FFF7C7\",\n    \"color\": \"#FAC641\",\n    \"startAt\": \"2023-08-25T12:25:00+03:00\",//дата сегодня\n    \"endAt\": \"2023-08-25T12:50:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02.02 проверка события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"from\": \"2023-08-25T12:25:00+03:00\", \n\"till\": \"2023-08-25T12:50:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02.03 удалить событие",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Response body is empty\", function (){",
+									"    pm.expect(jsonData.data).to.eql(true);",
+									"});",
+									"",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{eventId}},\n    \"startAt\":\"{{eventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03.01 прошлое латиница",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Type is personal\", function () {",
+									"    pm.expect(jsonData.data.type).to.eql(\"personal\");",
+									"});",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									"let eventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"eventId\", eventId);",
+									"console.info(eventId);",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"console.info(eventStartAt);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Pakhomova Look it\",\n    \"description\": \"То есть нам нужны следующие состояния: старт, напечатать. Д из состояния «старт» мы попробуем сразу же отдать билет и снова перейдем в состояние «null». Из состояния «старт» попробуем, чтобы сразу истёк таймер, и точно также мы перейдем в состояние «null».\",\n    \"backgroundColor\": \"#EBFDF2\",\n    \"color\": \"#43B658\",\n    \"startAt\": \"2023-07-26T09:42:00+03:00\",\n    \"endAt\": \"2023-07-26T12:50:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03.02 проверка события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"from\": \"2023-07-26T09:42:00+03:00\", \n\"till\": \"2023-07-26T12:50:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03.03 удалить событие",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Response body is empty\", function (){",
+									"    pm.expect(jsonData.data).to.eql(true);",
+									"});",
+									"",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{eventId}},\n    \"startAt\":\"{{eventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04.01 прошлое цифры+max символы описание",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Type is personal\", function () {",
+									"    pm.expect(jsonData.data.type).to.eql(\"personal\");",
+									"});",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									"let eventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"eventId\", eventId);",
+									"console.info(eventId);",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"console.info(eventStartAt);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова 56 Конференция\",\n    \"description\": \"Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления морал\",\n    \"backgroundColor\": \"#F9EBFF\",\n    \"color\": \"#F9EBFF\",\n    \"startAt\": \"2023-05-05T09:01:00+03:00\",\n    \"endAt\": \"2023-05-05T18:41:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04.02 проверка события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"from\": \"2023-05-05T09:01:00+03:00\", \n\"till\": \"2023-05-05T18:41:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04.03 удалить событие",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Response body is empty\", function (){",
+									"    pm.expect(jsonData.data).to.eql(true);",
+									"});",
+									"",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{eventId}},\n    \"startAt\":\"{{eventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05.01 будущее спецсимволы название + маркдаун в описании",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Type is personal\", function () {",
+									"    pm.expect(jsonData.data.type).to.eql(\"personal\");",
+									"});",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									"let eventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"eventId\", eventId);",
+									"console.info(eventId);",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"console.info(eventStartAt);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова @ !  []\",\n    \"description\": \"## **Вот хороший text**\",\n    \"backgroundColor\": \"#F9EBFF\",\n    \"color\": \"#D478F1\",\n    \"startAt\": \"2024-08-16T06:30:00+03:00\",\n    \"endAt\": \"2024-08-16T17:30:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05.02 проверка события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"from\": \"22024-08-16T06:30:00+03:00\", \n\"till\": \"2024-08-16T17:30:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05.03 удалить событие",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Response body is empty\", function (){",
+									"    pm.expect(jsonData.data).to.eql(true);",
+									"});",
+									"",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{eventId}},\n    \"startAt\":\"{{eventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06.01 будущее только обязательные поля",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Type is personal\", function () {",
+									"    pm.expect(jsonData.data.type).to.eql(\"personal\");",
+									"});",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									"let eventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"eventId\", eventId);",
+									"console.info(eventId);",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"console.info(eventStartAt);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова @ !  []\",\n    \"startAt\": \"2024-08-16T06:30:00+03:00\",\n    \"endAt\": \"2024-08-16T17:30:00+03:00\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06.02 проверка события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"from\": \"2024-08-16T06:30:00+03:00\", \n\"till\": \"2024-08-16T17:30:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06.03 удалить событие",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Response body is empty\", function (){",
+									"    pm.expect(jsonData.data).to.eql(true);",
+									"});",
+									"",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{eventId}},\n    \"startAt\":\"{{eventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07.03 событие на 2 дня",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Type is personal\", function () {",
+									"    pm.expect(jsonData.data.type).to.eql(\"personal\");",
+									"});",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									"let eventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"eventId\", eventId);",
+									"console.info(eventId);",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"console.info(eventStartAt);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова большое событие\",\n    \"description\": \"G\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-08-28T08:20:00+03:00\",\n    \"endAt\": \"2023-08-30T08:40:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07.02 проверка события Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"from\": \"2023-08-28T08:20:00+03:00\", \n\"till\": \"2023-08-30T08:40:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07.03 удалить событие",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Response body is empty\", function (){",
+									"    pm.expect(jsonData.data).to.eql(true);",
+									"});",
+									"",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{eventId}},\n    \"startAt\":\"{{eventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//let collectEventId = []; //как записывать каждый айди в массив?",
+							"//collectEventId.push(eventId);",
+							"//console.info(collectEventId);",
+							"",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "creatPersonal события с невалидными данными",
+			"item": [
+				{
+					"name": "01 пустое название события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Data is null\", function (){",
+									"    pm.expect(jsonData.data).to.eql(null);",
+									"});",
+									"pm.test (\"Error is not empty\", function (){",
+									"    pm.expect(jsonData.errors).not.eql(null);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"\",\n    \"description\": \"G\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-07-17T08:20:00+03:00\",\n    \"endAt\": \"2023-07-17T08:40:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 >40 название события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Data is null\", function (){",
+									"    pm.expect(jsonData.data).to.eql(null);",
+									"});",
+									"pm.test (\"Error is not empty\", function (){",
+									"    pm.expect(jsonData.errors).not.eql(null);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова Всё это будут позитивные сценарии, поэтому давайте выделим их зеленым цветом. \",\n    \"description\": \"\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-11-22T12:20:00+03:00\",\n    \"endAt\": \"2023-11-22T12:50:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03 > 500 символов в описании",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Data is null\", function (){",
+									"    pm.expect(jsonData.data).to.eql(null);",
+									"});",
+									"pm.test (\"Error is not empty\", function (){",
+									"    pm.expect(jsonData.errors).not.eql(null);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова Собрание\",\n    \"description\": \"Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей. Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.Наше дело не так однозначно, как может показаться: постоянный количественный рост и сфера нашей активности влечет за собой процесс внедрения и модернизации своевременного выполнения сверхзадачи. Значимость этих проблем настолько очевидна, что семантический разбор внешних противодействий не оставляет шанса для дальнейших направлений развития. Современные технологии достигли такого уровня, что понимание сути ресурсосберегающих технологий предполагает независимые способы реализации укрепления моральных ценностей.\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-11-22T12:20:00+03:00\",\n    \"endAt\": \"2023-11-22T12:50:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04 дата не существующая",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Data is null\", function (){",
+									"    pm.expect(jsonData.data).to.eql(null);",
+									"});",
+									"pm.test (\"Error message is correct\", function (){",
+									"    pm.expect(jsonData.errors[0].error.message).to.eql(\"Fail to check against [correctDateTimeInAtomFormat] validation filter\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова мурлык_мурлык\",\n    \"description\": \"вотИЛетоПролетело\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-08-34T13:00:00+03:00\",\n    \"endAt\": \"2023-08-34T14:00:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05 пустая дата события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Data is null\", function (){",
+									"    pm.expect(jsonData.data).to.eql(null);",
+									"});",
+									"pm.test (\"Error is not empty\", function (){",
+									"    pm.expect(jsonData.errors).not.eql(null);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова Выбросить ёлку\",\n    \"description\": \"G\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-07-17T08:40:00+03:00\",//обязательное поле\n    \"endAt\": \"\"//обязательное поле\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06 одинаковое время начала и конца события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Data is null\", function (){",
+									"    pm.expect(jsonData.data).to.eql(null);",
+									"});",
+									"pm.test (\"Error is not empty\", function (){",
+									"    pm.expect(jsonData.errors).not.eql(null);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова Выбросить ёлку\",\n    \"description\": \"G\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-07-17T08:40:00+03:00\",\n    \"endAt\": \"2023-07-17T08:40:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07 неправильный последний день февраля",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Data is null\", function (){",
+									"    pm.expect(jsonData.data).to.eql(null);",
+									"});",
+									"pm.test (\"Error is not empty\", function (){",
+									"    pm.expect(jsonData.errors).not.eql(null);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова Выбросить ёлку\",\n    \"description\": \"G\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-02-29T08:40:00+03:00\",\n    \"endAt\": \"2023-02-29T10:40:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "08 не выбран цвет фона и события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Data is null\", function (){",
+									"    pm.expect(jsonData.data).to.eql(null);",
+									"});",
+									"pm.test (\"Error is not empty\", function (){",
+									"    pm.expect(jsonData.errors).not.eql(null);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова निजी संदेश\",\n    \"description\": \"G\",\n    \"backgroundColor\": \"\",\n    \"color\": \"\",\n    \"startAt\": \"2023-07-17T08:20:00+03:00\",\n    \"endAt\": \"2023-07-17T08:40:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "09 цвет некорректный",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Data is empty\", function (){",
+									"    pm.expect(jsonData.data).to.eql(null);",
+									"});",
+									"pm.test (\"Error is not empty\", function (){",
+									"    pm.expect(jsonData.errors).not.eql(null);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова निजी संदेश\",\n    \"description\": \"G\",\n    \"backgroundColor\": \"#FF4500\",//цвет не из цветовой схемы\n    \"color\": \"#008B8B\",//цвет не из цветовой схемы\n    \"startAt\": \"2023-08-27T07:20:00+03:00\",\n    \"endAt\": \"2023-08-27T08:40:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10 пустое тело запроса",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Data is null\", function (){",
+									"    pm.expect(jsonData.data).to.eql(null);",
+									"});",
+									"pm.test (\"Error is not empty\", function (){",
+									"    pm.expect(jsonData.errors).not.eql(null);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "updatePersonal Изменение события валидные данные",
+			"item": [
+				{
+					"name": "01 настоящее - создание события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"",
+									"let eventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"eventId\", eventId);",
+									"",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"",
+									"",
+									"//Tests",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type header is application/json\", () => {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"",
+									"pm.test(\"Type is personal\", function () {",
+									"    pm.expect(jsonData.data.type).to.eql(\"personal\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова Всё это будут позитивные сценар\",//максимально разрешенное кол-во символов\n    \"description\": \"\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-08-28T08:00:00+03:00\",\n    \"endAt\": \"2023-08-28T08:10:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 настоящее -> будущее",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"let newEventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"newEventId\",newEventId);",
+									"",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"backgroundColor\": \"#FFF7C7\",\n    \"color\": \"#FAC641\", \n    \"description\": \"Описание тестового события_АПИ\",\n    \"title\": \"Пахомова_настоящее_будущее_1\",\n    \"startAt\": \"2024-02-15T12:45:00+03:00\",\n    \"endAt\": \"2024-02-15T13:40:00+03:00\",\n    \"id\": {{eventId}},\n    \"oldStartAt\": \"{{eventStartAt}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/updatePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03 будущее -> прошлое",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"let newEventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"newEventId\",newEventId);",
+									"",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"backgroundColor\": \"#EBFDF2\",\n    \"color\": \"#43B658\", \n    \"description\": \"Девочка – припевочка рассказывает о нейросети-сказочнице\",\n    \"title\": \"Пахомова_настоящее_будущее_2\",\n    \"startAt\": \"2023-04-10T07:30:00+03:00\",\n    \"endAt\": \"2023-04-10T10:30:00+03:00\",\n    \"id\": {{newEventId}},\n    \"oldStartAt\": \"{{eventStartAt}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/updatePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04 прошлое -> настоящее",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"let newEventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"newEventId\",newEventId);",
+									"",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"backgroundColor\": \"#F9EBFF\",\n    \"color\": \"#D478F1\", \n    \"description\": \"много_вещей\",\n    \"title\": \"Пахомова_прошлое_настоящее_3\",\n    \"startAt\": \"2023-08-28T21:00:00+03:00\",\n    \"endAt\": \"2023-08-28T23:40:00+03:00\",\n    \"id\": {{newEventId}},\n    \"oldStartAt\": \"{{eventStartAt}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/updatePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05 настоящее -> прошлое",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"let newEventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"newEventId\",newEventId);",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"backgroundColor\": \"#FFF7C7\",\n    \"color\": \"#FAC641\", \n    \"description\": \"Описание тестового события_АПИ\",\n    \"title\": \"Пахомова_прошлое_настоящее_4\",\n    \"startAt\": \"2022-04-12T11:30:00+03:00\",\n    \"endAt\": \"2022-04-12T17:30:00+03:00\",\n    \"id\": {{newEventId}},\n    \"oldStartAt\": \"{{eventStartAt}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/updatePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06 прошло -> будущее",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"let newEventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"newEventId\",newEventId);",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"backgroundColor\": \"#FFF7C7\",\n    \"color\": \"#FAC641\",\n    \"description\": \"Описание тестового события_АПИ\",\n    \"title\": \"Пахомова_прошлое_настоящее_5\",\n    \"startAt\": \"2023-11-09T16:00:00+03:00\",\n    \"endAt\": \"2023-11-09T20:30:00+03:00\",\n    \"id\": {{newEventId}},\n    \"oldStartAt\": \"{{eventStartAt}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/updatePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07 будущее -> настоящее",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"let newEventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"newEventId\",newEventId);",
+									"",
+									"let eventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"eventStartAt\", eventStartAt);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"backgroundColor\": \"#FFF7C7\",\n    \"color\": \"#FAC641\", \n    \"description\": \"Описание тестового события_АПИ\",\n    \"title\": \"Пахомова_прошлое_настоящее_6\",\n    \"startAt\": \"2023-08-28T10:00:00+03:00\",\n    \"endAt\": \"2023-08-28T12:30:00+03:00\",\n    \"id\": {{newEventId}},\n    \"oldStartAt\": \"{{eventStartAt}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/updatePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "08 Удаление события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test (\"Response body is empty\", function (){",
+									"    pm.expect(jsonData.data).to.eql(true);",
+									"});",
+									"",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{newEventId}},\n    \"startAt\":\"{{eventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "updatePersonal Изменение события негативные проверки",
+			"item": [
+				{
+					"name": "01 только изменяемые поля",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"startAt\": \"2023-08-28T10:00:00+03:00\",\n    \"endAt\": \"2023-08-28T12:30:00+03:00\",\n    \"id\": {{newEventId}},\n    \"oldStartAt\": \"{{eventStartAt}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/updatePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 не существующий id события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \"backgroundColor\": \"#FFF7C7\",\n    \"color\": \"#FAC641\", \n    \"description\": \"\",\n    \"title\": \"Пахомова_настоящее_будущее_1\",\n    \"startAt\": \"2024-02-15T12:45:00+03:00\",\n    \"endAt\": \"2024-02-15T13:40:00+03:00\",\n    \"id\": 11111190,\n    \"oldStartAt\": \"{{eventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/updatePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"updatePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03 некорректная дата события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \"backgroundColor\": \"#FFF7C7\",\n    \"color\": \"#FAC641\", \n    \"description\": \"Описание тестового события_АПИ\",\n    \"title\": \"Пахомова_настоящее_будущее_1\",\n    \"startAt\": \"2024-02-15T12:45:00+03:00\",\n    \"endAt\": \"2024-02-15T13:40:00+03:00\",\n    \"id\": {{eventId}},\n    \"oldStartAt\": \"2024-08-30T12:45:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/updatePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"updatePersonal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "removePersonal",
+			"item": [
+				{
+					"name": "01 создание события для удаления",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Content-Type header is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+									"});",
+									"pm.test(\"Type is personal\", function () {",
+									"    pm.expect(jsonData.data.type).to.eql(\"personal\");",
+									"});",
+									"pm.test (\"Error is empty\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									"let delEventId = jsonData.data.payload.id;",
+									"pm.collectionVariables.set(\"delEventId\", delEventId);",
+									"",
+									"",
+									"let delEventStartAt = jsonData.data.startAt",
+									"pm.collectionVariables.set(\"delEventStartAt\", delEventStartAt);",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{eventpassword}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test.tst320@skyeng.ru",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Пахомова Удаление события\",\n    \"description\": \"\",\n    \"backgroundColor\": \"#F4F5F6\",\n    \"color\": \"#81888D\",\n    \"startAt\": \"2023-08-28T08:00:00+03:00\",\n    \"endAt\": \"2023-08-28T08:10:00+03:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/createPersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"createPersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 удаление события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"pm.test (\"Error is null\", function (){",
+									"    pm.expect(jsonData.errors).to.eql(null);",
+									"});",
+									"",
+									"pm.test (\"Data is true\", function (){",
+									"    pm.expect(jsonData.data).to.eql(true);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{delEventId}},\n    \"startAt\":\"{{delEventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03 повторное удаление события",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"pm.test (\"Personal event not found\", function (){",
+									"pm.expect(jsonData.errors[0].error.message).to.eql(\"Personal event not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": {{delEventId}},\n    \"startAt\":\"{{delEventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04 удаление события с не сущ. id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"pm.test (\"Personal event not found\", function (){",
+									"pm.expect(jsonData.errors[0].error.message).to.eql(\"Personal event not found\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 111111121290,//не существующий id\n    \"startAt\":\"{{delEventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05 удаление события с не валидным id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"let jsonData = pm.response.json();",
+									"pm.test (\"id has invalid type\", function (){",
+									"pm.expect(jsonData.errors[0].error.message).to.include(\"Invalid type\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "token_global={{eventToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"111111!FT\",// невалидный id\n    \"startAt\":\"{{delEventStartAt}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/{{ver}}/schedule/removePersonal",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"{{ver}}",
+								"schedule",
+								"removePersonal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{eventpassword}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "test.tst320@skyeng.ru",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://api-teachers.skyeng.ru",
+			"type": "string"
+		},
+		{
+			"key": "ver",
+			"value": "v2",
+			"type": "string"
+		},
+		{
+			"key": "eventpassword",
+			"value": "pr4VmfgHsi",
+			"type": "string"
+		},
+		{
+			"key": "eventToken",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJ1c2VySWQiOjE0NzIwMDY5LCJpZGVudGl0eSI6InRlc3QudHN0MzIwQHNreWVuZy5ydSIsImlkZW50aXR5TG9naW4iOm51bGwsImlkZW50aXR5RW1haWwiOiJ0ZXN0LnRzdDMyMEBza3llbmcucnUiLCJpZGVudGl0eVBob25lIjoiKzc5ODU0NTg2NTY4IiwibmFtZSI6InRlc3QiLCJzdXJuYW1lIjpudWxsLCJlbWFpbCI6InRlc3QudHN0MzIwQHNreWVuZy5ydSIsInVpTGFuZ3VhZ2UiOiJydSIsImxvY2FsZSI6InJ1Iiwic2VydmljZUxvY2FsZSI6bnVsbCwidWFzIjozMCwiand0VHlwZSI6MSwianRpIjoiaUVPYXlhRGNhMlJPMk5abTNsOXk3eERuaFlsUTZmSG0iLCJicmFuZCI6bnVsbCwiZXhwIjoxNjkzMzMwMzg5LCJhSXNTdHJvbmciOnRydWUsImFUeXBlIjoiVVNFUk5BTUVfUEFTU1dPUkQiLCJhVGltZSI6MTY5MjYzMTk2OCwicm9sZXMiOlsiUk9MRV9URUFDSEVSX0NBTkRJREFURSIsIlJPTEVfVEVBQ0hFUl9DQU5ESURBVEVfQkFTRV9BQ0NFU1MiLCJST0xFX1RUQ19VU0FHRSIsIlJPTEVfVklNQk9YX1RFQUNIRVJfVVNBR0UiLCJST0xFX1RFQUNIRVIiLCJST0xFX0NSTTJfVEVBQ0hFUl9BQ0NFU1MiLCJST0xFX01BVEhfVEVBQ0hFUiIsIlJPTEVfTUFUSF9DT05URU5UX1RIRU1FX1ZJRVciXX0.K1comZwlXd0fts8OsT_Z1G9ApfG4Y1OAr-131E0dtMyqk7iyhGFRFhseuxwL9CIXGcDlOdIkgElzddQgZO7N06KMLLMu_5kLA77j6Ljgkzxd11kqIqRC-vvs5jrEWsIdL-4ZPDQ9kqaVoE0oq4xrm-cxFtU5XTCKgRu0HG9rOU6SgbzvNhx72cUDKWPj6BAbhw02veb29tzQXCbgPk64PpuT6_Nj7WqKS3npdaYnkQI1gXuSV0s5AXfqG7lmV1Zghn97d5pCGC45nsubi5BtlVX9sRfUK7q6mrav3Yv5iryvCgGaFZoLIe9jIlV1EpKXfiuOUGOjl8KPNR_6Ll5g5L8N6XMUc6BM7QEXofm60sgLtJKiPaSXxfBC3MHuAmo5Q1VdDmembjWdPyelRRNk3wEfOu1blzHjv7YSHZfr90eFj0qAGjpetqx3WtWSdmiBJhQLIoWEwRChPyAOeiIhO0RRbfI3WXHY40LkEHos4IJxeUMaDZtvy9Sbqrc_rOpepEpv9xJG4Y-FWTalpAjKhUotdG0c5VkIGrzep6767BHtaOplts2aNcZDo6JqGOp2S8ic8m9qLjOEn8U5LnN9JiQEN_5jsWUMU7ioq5qK9thgSWH1uyDqte59qh_SpFVoPUYxw8LIwAZHmIJ1ACNbFEq6A8mjB300ZiUII2l5DxQ",
+			"type": "string"
+		},
+		{
+			"key": "eventId",
+			"value": ""
+		},
+		{
+			"key": "eventStartAt",
+			"value": ""
+		},
+		{
+			"key": "newEventId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "delEventId",
+			"value": ""
+		},
+		{
+			"key": "delEventStartAt",
+			"value": ""
+		},
+		{
+			"key": "reqEventStartAt",
+			"value": ""
+		}
+	]
+}
