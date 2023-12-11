@@ -46,7 +46,7 @@
 - Проведение тестирования
 - Фиксация найденных дефектов
   
-Ссылка на проект - https://bit.ly/3TdpWuq
+Ссылка на проект - https://bit.ly/46VtO6u
 - Приемочные, Смоук, API тестирование:
 тест-кейсы - https://bit.ly/3GqIRKw
 - Функциональное и нефункциональное тестирование:
@@ -55,8 +55,8 @@
 чек-лист - https://bit.ly/3NbBzOp
 - Тестирование API:
 чек-лист - https://bit.ly/47LTdRd
-- Коллекция Postman - https://bit.ly/3uOyAVZ (**нужно привести в порядок**)
-- Бак-репорты (**нужно привести в порядок**)
+- Коллекция Postman - https://bit.ly/47U8Tlo
+- Бак-репорты [1 UI](https://drive.google.com/file/d/1peVXKeCg5QXUWP3GMYjsTQt6r62WWd5I/view?usp=drive_link "Тестирование через UI"), [2 API](https://drive.google.com/file/d/17dwtrKogjUxcIgvAGjMHWDt7GHg2KBbH/view?usp=drive_link "Тестирование API Postman")
 
 #### Проект SQL
 Задачи:
