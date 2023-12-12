@@ -35,7 +35,7 @@
 - Mockoon
 - Swagger
 - SOAP UI
-- curl
+- cURL
 - DevTools
 - Jmeter
 
