@@ -78,7 +78,7 @@
 - Jira для фиксирования баг-репортов.
 
 
-Ссылка на проект - [Файл pdf](https://drive.google.com/file/d/1Jz6y8WBe8ZmFJe4_3tEoKAh84gbdsnT9/view?usp=drive_link)
+Ссылка на проект - [Файл pdf](https://drive.google.com/file/d/1Jz6y8WBe8ZmFJe4_3tEoKAh84gbdsnT9/view?usp=drive_link) 
 [Ссылка на Notion](https://flowery-singer-90b.notion.site/API-637d7acc6c38489c85c454ea351f7203)
 - Приемочные, Смоук, API тестирование:
 тест-кейсы - [Выгрузка pdf из Qase](https://drive.google.com/file/d/1o9qEQg56pQDn2oFbsI-EqPvUHHsk2fht/view?usp=drive_link)
