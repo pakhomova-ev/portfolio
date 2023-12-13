@@ -95,7 +95,7 @@
 #### Проект SQL
 Задачи:
 - составить запросы на получение информации по заданным условиям
-[ССылка на Google docs](https://docs.google.com/document/d/1ynK-Lz99XTTP4KhFsc4taSHFVmiLP3vJHErw2oY3Ung/edit?usp=sharing)
+[Ссылка на Google docs](https://docs.google.com/document/d/1ynK-Lz99XTTP4KhFsc4taSHFVmiLP3vJHErw2oY3Ung/edit?usp=sharing)
 
 
 
