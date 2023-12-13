@@ -46,9 +46,9 @@
 - Применение техних тест-дизайна (классны эквивалентоности, граничные значения, попарное тестирование) при составление тестовой документации,
 - Составление коллекции запросов в Postman по основным CRUD операциям,
 - Использование переменных в URL-адресе, в теле запроса, в скриптах пред-запроса и тестов
-> ![Screenshot скрипты в теле запроса](https://drive.google.com/drive/folders/1OnTf7M2aBucvsb1vkj4UHDv5VOzPGKIf) 
-![Screenshot скрипты во вкладке пред-запрос](https://drive.google.com/drive/folders/1OnTf7M2aBucvsb1vkj4UHDv5VOzPGKIf)
-![Screenshot скрипты во вкладке  тест](https://drive.google.com/drive/folders/1OnTf7M2aBucvsb1vkj4UHDv5VOzPGKIf)
+> ![Screenshot скрипты в теле запроса](https://github.com/pakhomova-ev/portfolio/blob/pakhomova-ev-screenshots/body_script.png)
+![Screenshot скрипты во вкладке пред-запрос](https://github.com/pakhomova-ev/portfolio/blob/pakhomova-ev-screenshots/pre-req_script.png)
+![Screenshot скрипты во вкладке  тест](https://github.com/pakhomova-ev/portfolio/blob/pakhomova-ev-screenshots/test_script.png)
 
 **Проект:** расписание личного кабинета для учителей Skyeng.
 
@@ -78,7 +78,7 @@
 - Jira для фиксирования баг-репортов.
 
 
-Ссылка на проект - [Файл pdf] (https://drive.google.com/file/d/1Jz6y8WBe8ZmFJe4_3tEoKAh84gbdsnT9/view?usp=drive_link)
+Ссылка на проект - [Файл pdf](https://drive.google.com/file/d/1Jz6y8WBe8ZmFJe4_3tEoKAh84gbdsnT9/view?usp=drive_link)
 [Ссылка на Notion](https://flowery-singer-90b.notion.site/API-637d7acc6c38489c85c454ea351f7203)
 - Приемочные, Смоук, API тестирование:
 тест-кейсы - [Выгрузка pdf из Qase](https://drive.google.com/file/d/1o9qEQg56pQDn2oFbsI-EqPvUHHsk2fht/view?usp=drive_link)
