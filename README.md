@@ -97,8 +97,10 @@
 - составить запросы на получение информации по заданным условиям
 [Ссылка на Google docs](https://docs.google.com/document/d/1ynK-Lz99XTTP4KhFsc4taSHFVmiLP3vJHErw2oY3Ung/edit?usp=sharing)
 
-
-
+#### Пройденные дополнительные курсы:
+- **Основы работы с Git Яндекс Практикум**
+-------------------------------------------
+![Screenshot completed Git course](https://github.com/pakhomova-ev/portfolio/blob/6e41c27e271af0cff95f647ef78a7e3bbfeb7724/Screenshot%202023-12-22%20at%2015.56.24.png)
 
 
 
