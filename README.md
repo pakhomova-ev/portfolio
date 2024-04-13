@@ -46,9 +46,9 @@
 - Применение техних тест-дизайна (классны эквивалентоности, граничные значения, попарное тестирование) при составление тестовой документации,
 - Составление коллекции запросов в Postman по основным CRUD операциям,
 - Использование переменных в URL-адресе, в теле запроса, в скриптах пред-запроса и тестов
-> ![Screenshot скрипты в теле запроса](https://github.com/pakhomova-ev/portfolio/blob/pakhomova-ev-screenshots/body_script.png)
-![Screenshot скрипты во вкладке пред-запрос](https://github.com/pakhomova-ev/portfolio/blob/pakhomova-ev-screenshots/pre-req_script.png)
-![Screenshot скрипты во вкладке  тест](https://github.com/pakhomova-ev/portfolio/blob/pakhomova-ev-screenshots/test_script.png)
+> ![Screenshot скрипты в теле запроса](https://github.com/pakhomova-ev/portfolio/blob/main/body_script.png)
+![Screenshot скрипты во вкладке пред-запрос](https://github.com/pakhomova-ev/portfolio/blob/main/pre-req_script.png)
+![Screenshot скрипты во вкладке  тест](https://github.com/pakhomova-ev/portfolio/blob/main/test_script.png)
 
 **Проект:** расписание личного кабинета для учителей Skyeng.
 
